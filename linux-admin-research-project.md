@@ -856,10 +856,440 @@ sudo apt remove nginx
 
 Using DNF (Fedora, RHEL 8+, CentOS Stream)
 
+**What tools are available in Linux for monitoring system performance? Describe the use of top, htop, vmstat, and iostat.**
+
+Linux provides several command-line tools for monitoring system performance, resource utilization, and troubleshooting bottlenecks. Among the most commonly used tools are top, htop, vmstat, and iostat.
+
+1. top
+
+The top command provides a real-time view of running processes and system resource usage.
+
+Key Information Displayed
+- CPU utilization
+- Memory usage
+- Swap usage
+- Running processes
+- Process IDs (PIDs)
+- User ownership
+- Process priority and status
+
+Use Case
+
+Useful for:
+
+- Identifying CPU-intensive processes
+- Monitoring memory consumption
+- Diagnosing performance issues in real time.
+
+2. htop
+
+htop is an enhanced and user-friendly alternative to top.
+
+Features
+- Color-coded display
+- Interactive interface
+- Mouse support
+- Easier process management
+- Tree view of processes
+
+Use Case
+
+Ideal for:
+
+- Interactive system monitoring
+- Viewing resource-heavy processes
+- Quickly managing running processes
+
+3. vmstat
+
+vmstat (Virtual Memory Statistics) reports information about:
+
+- Memory
+- Processes
+- CPU activity
+- Paging
+- Disk I/O
+
+Use Case
+
+Useful for:
+
+- Detecting memory shortages
+- Identifying swapping activity
+- Monitoring CPU and I/O performance
+
+4. iostat
+
+iostat (Input/Output Statistics) monitors CPU utilization and storage device performance.
+
+Installation
+
+Ubuntu/Debian:
+```
+sudo apt install sysstat
+```
+
+Use Case
+
+Useful for:
+
+- Diagnosing disk bottlenecks
+- Monitoring storage performance
+- Analyzing I/O-intensive workloads
+
+**How do you check disk usage and availability using commands like df and du?**
+
+Linux provides several commands for monitoring disk space usage and availability. Two of the most commonly used commands are df (Disk Filesystem) and du (Disk Usage).
+
+1. Using the df Command
+
+The df command displays information about disk space usage and available space on mounted file systems.
+
+Basic Syntax
+```
+df -h
+```
+
+Example Output
+```
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        50G   25G   22G  53% /
+```
+
+2. Using the du Command
+
+The du command estimates disk space used by files and directories.
+
+Check Current Directory Usage
+```
+du -h
+```
+
+Example Output
+```
+4.0K  ./documents
+20M   ./downloads
+50M   .
+```
+
+**Explain the concept of SSH. How do you set up an SSH server and client in Linux?**
+
+SSH (Secure Shell) is a network protocol used to securely access and manage remote computers over an unsecured network. It encrypts all communication between the client and server, protecting data from eavesdropping, tampering, and unauthorized access.
+
+SSH is commonly used for:
+
+- Remote server administration
+- Secure file transfers (SCP and SFTP)
+- Running commands on remote systems
+- Managing cloud servers
+- Secure tunneling and port forwarding.
+
+**Setting Up an SSH Server in Linux**
+
+Step 1: Install the SSH Server
+
+Ubuntu/Debian
+```
+sudo apt update
+sudo apt install openssh-server
+```
+
+Step 2: Verify Installation
+```
+sshd -V
+```
+
+or
+```
+ssh -V
+```
+
+Step 3: Start the SSH Service
+
+```
+sudo systemctl start ssh
+```
+
+Step 4: Enable SSH at Boot
+```
+sudo systemctl enable ssh
+```
+
+Step 5: Verify Service Status
+```
+sudo systemctl status ssh
+```
+
+or 
+```
+sudo systemctl status sshd
+```
+
+Expected output:
+```
+Active: active (running)
+```
+Step 6: Check Listening Port
+```
+sudo ss -tulnp | grep :22
+```
+
+**Setting Up an SSH Client in Linux**
+
+Most Linux distributions include the SSH client by default.
+
+Verify installation:
+```
+ssh -V
+```
+
+If not installed:
+
+```
+sudo apt install openssh-client
+```
+
+Connecting to a Remote Server
+```
+ssh username@server_ip
+```
+
+Example:
+```
+ssh isah@192.168.1.100
+```
+
+**What Are SELinux and AppArmor?**
+
+SELinux (Security-Enhanced Linux) and AppArmor (Application Armor) are Linux security frameworks that provide Mandatory Access Control (MAC). They add an extra layer of security beyond traditional Linux file permissions and ownership.
+
+SELinux (Security-Enhanced Linux)
+
+SELinux was originally developed by National Security Agency and is integrated into the Linux kernel.
+
+SELinux uses security labels (contexts) assigned to:
+
+- Files
+- Directories
+- Processes
+- Ports
+- Users
+
+AppArmor (Application Armor)
+
+How AppArmor Works
+
+Instead of labels and contexts, AppArmor uses path-based security profiles.
+
+Profiles specify:
+
+- Which files an application can access
+- Which network operations it can perform
+- Which capabilities it can use
 
 
+Check AppArmor Status
+```
+sudo apparmor_status
+```
+
+**How They Enhance Linux Security**
+
+1. Principle of Least Privilege
+
+Applications receive only the permissions they need.
+
+Example:
+
+- Web server can read web files.
+- Cannot access sensitive system files.
+
+2. Limits Damage from Compromised Applications
+
+3. Protects Critical System Files
+
+Sensitive files such as:
+```
+/etc/shadow
+/etc/passwd
+/boot
+```
+can be protected from unauthorized access even by compromised services.
 
 
+4. Prevents Unauthorized Network Activity
+
+Policies can restrict:
+
+- Outbound connections
+- Inbound connections
+- Specific network ports
+
+This reduces opportunities for data theft and malware communication.
 
 
+5. Improves Compliance and Auditing
 
+Both frameworks generate logs that help administrators:
+
+- Detect suspicious behavior
+- Investigate incidents
+- Meet security compliance requirements
+
+**Performing Backups in Linux**
+
+Backups are essential for protecting data against accidental deletion, hardware failure, corruption, ransomware, or system crashes. Linux provides several powerful tools for creating backups, including rsync, tar, and dd.
+
+Each tool serves a different purpose:
+
+- rsync – Synchronizes files and directories efficiently.
+- tar – Archives and compresses files/directories.
+- dd – Creates exact disk or partition images (bit-for-bit copies).
+
+1. Using rsync for Backups
+
+rsync (Remote Sync) is one of the most popular Linux backup tools. It copies only the changed portions of files, making backups fast and efficient.
+
+Basic Syntax
+```
+rsync [options] source destination
+```
+
+Backup a Directory
+```
+rsync -av /home/user/Documents/ /backup/Documents/
+```
+
+Explanation
+- a = Archive mode (preserves permissions, ownership, timestamps)
+- v = Verbose output
+
+Backup to a Remote Server
+```
+rsync -av /home/user/Documents/ user@192.168.1.100:/backup/
+```
+
+2. Using tar for Backups
+
+tar (Tape Archive) combines multiple files and directories into a single archive file. It is often used with compression.
+
+Create an Archive
+```
+tar -cvf backup.tar /home/user/Documents
+```
+
+Options
+* -c = Create archive
+* -v = Verbose
+* -f = Specify filename
+
+3. Using dd for Disk Imaging
+
+dd creates a sector-by-sector copy of disks, partitions, or files.
+
+Create a Disk Image
+```
+sudo dd if=/dev/sda of=/backup/disk.img bs=4M status=progress
+```
+
+Explanation
+* if = Input file/device
+* of = Output file
+* bs=4M = Block size
+* status=progress = Show progress
+
+Backup a Partition
+
+```
+sudo dd if=/dev/sda1 of=/backup/sda1.img bs=4M status=progress
+```
+
+Restore a Disk Image
+```
+sudo dd if=/backup/disk.img of=/dev/sda bs=4M status=progress
+```
+
+**System Recovery Strategies in Linux**
+
+System recovery refers to the process of restoring a Linux system after failures such as hardware crashes, software corruption, accidental deletion, malware attacks, or configuration errors. An effective recovery plan minimizes downtime and data loss.
+
+1. Regular Backups
+
+The most important recovery strategy is maintaining regular backups.
+
+Types of Backups
+
+Full Backup
+
+- Copies all data.
+- Simplest to restore.
+- Requires more storage.
+
+Incremental Backup
+
+- Copies only changes since the last backup.
+- Faster and uses less storage.
+
+Differential Backup
+
+- Copies changes since the last full backup.
+- Faster restoration than incremental backups.
+
+2. Create System Images
+
+A system image is a complete snapshot of a disk or partition.
+
+Using dd
+```
+sudo dd if=/dev/sda of=/backup/system.img bs=4M status=progress
+```
+
+Benefits:
+
+* Restores the entire system
+* Preserves boot loaders and partition tables
+* Useful after disk failure
+
+3. Use RAID for Disk Redundancy
+
+RAID protects against hard drive failures.
+
+Benefits:
+
+- High availability
+- Reduced downtime
+- Protection from single-disk failures.
+
+4. Maintain Bootable Recovery Media
+
+Uses:
+
+- Repair boot loaders
+- Restore backups
+- Recover files
+- Diagnose hardware issues
+
+5. Recover the Boot Loader
+
+A damaged boot loader can prevent Linux from starting.
+
+6. Use Filesystem Recovery Tools
+
+Unexpected shutdowns or disk corruption can damage filesystems.
+
+8. Disaster Recovery Planning
+
+Organizations should have a documented disaster recovery (DR) plan.
+
+A DR plan should include:
+
+- Backup locations
+- Recovery procedures
+- Emergency contacts
+- Recovery priorities
+- Testing schedules
+
+
+10. Log Management and Troubleshooting
+
+Logs are critical during recovery.
