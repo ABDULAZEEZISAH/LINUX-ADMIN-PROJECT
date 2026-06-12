@@ -29,7 +29,7 @@ This script:
 - Checks service status.
 - Provides meaningful error messages.
 
-
+```
 # Check if required parameters are provided
 
 
@@ -89,7 +89,7 @@ echo "[INFO] Connected successfully."
 
 if command -v apt >/dev/null 2>&1; then
 
-```
+
 echo "[INFO] Ubuntu/Debian system detected."
 
 sudo apt update -y
